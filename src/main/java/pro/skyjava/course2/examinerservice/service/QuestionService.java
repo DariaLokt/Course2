@@ -1,5 +1,7 @@
 package pro.skyjava.course2.examinerservice.service;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 import pro.skyjava.course2.examinerservice.domain.Question;
 
 import java.util.Collection;
