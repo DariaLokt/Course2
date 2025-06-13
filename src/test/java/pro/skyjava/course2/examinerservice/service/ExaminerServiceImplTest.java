@@ -29,31 +29,46 @@ class ExaminerServiceImplTest {
     @Test
     @DisplayName("Выбрасывает исключение, если вопросов меньше, чем в репозитории")
     void givenRepositoryHasLessQuestions_whenGetQuestions_thenThrowsException() {
+//        given
         Question trail = new Question("Sun", "Moon");
+
+//        when
         Mockito.when(questionService.getAll()).thenReturn(Set.of(trail));
+
+//        then
         Assertions.assertThrows(ExceedingAmountException.class, () -> examinerService.getQuestions(questionService.getAll().size()+1));
     }
 
     @Test
     @DisplayName("Вообще возвращает вопросы")
     void givenRepositoryHasThisAmountOfQuestions_whenGetQuestions_thenGetsQuestions() {
+//        given
         Question trail = new Question("Sun", "Moon");
         Question trail2 = new Question("Earth", "Mars");
         Question trail3 = new Question("Venus", "Mercury");
+
+//        when
         Mockito.when(questionService.getAll()).thenReturn(Set.of(trail,trail2,trail3));
         Mockito.when(questionService.getRandomQuestion()).thenReturn(trail);
         examinerService.getQuestions(1);
+
+//        then
         Mockito.verify(questionService).getRandomQuestion();
     }
 
     @Test
     @DisplayName("Не возвращает повторяющиеся вопросы")
     void givenRandomGivesSameQuestion_whenGetQuestions_thenThrowsException() {
+//        given
         Question trail = new Question("Sun", "Moon");
         Question trail2 = new Question("Earth", "Mars");
         Question trail3 = new Question("Venus", "Mercury");
+
+//        when
         Mockito.when(questionService.getAll()).thenReturn(Set.of(trail,trail2,trail3));
         Mockito.when(questionService.getRandomQuestion()).thenReturn(trail);
+
+//        then
         Assertions.assertThrows(RandomizerErrorException.class, () -> examinerService.getQuestions(2));
     }
 }

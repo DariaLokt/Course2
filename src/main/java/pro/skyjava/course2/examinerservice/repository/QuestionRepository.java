@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Repository
 public class QuestionRepository {
-    Set<Question> questions;
+    private final Set<Question> questions;
 
     public QuestionRepository(Set<Question> questions) {
         this.questions = questions;
