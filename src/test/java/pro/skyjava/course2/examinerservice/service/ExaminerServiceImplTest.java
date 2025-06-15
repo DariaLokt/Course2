@@ -13,7 +13,6 @@ import pro.skyjava.course2.examinerservice.exception.ExceedingAmountException;
 import pro.skyjava.course2.examinerservice.exception.RandomizerErrorException;
 import pro.skyjava.course2.examinerservice.repository.QuestionRepository;
 
-import java.util.Random;
 import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)

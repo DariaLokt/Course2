@@ -16,4 +16,5 @@ final class QuestionError {
     public String getMessage() {
         return message;
     }
+
 }
