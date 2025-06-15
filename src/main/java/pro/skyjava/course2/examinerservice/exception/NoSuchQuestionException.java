@@ -4,4 +4,5 @@ public class NoSuchQuestionException extends RuntimeException {
     public NoSuchQuestionException() {
         super("Такого вопроса нет");
     }
+
 }

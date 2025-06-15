@@ -4,28 +4,26 @@ import org.springframework.stereotype.Service;
 import pro.skyjava.course2.examinerservice.domain.Question;
 import pro.skyjava.course2.examinerservice.exception.ExistingQuestionException;
 import pro.skyjava.course2.examinerservice.exception.NoSuchQuestionException;
+import pro.skyjava.course2.examinerservice.repository.QuestionRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class JavaQuestionService implements QuestionService{
-    Set<Question> questions;
-    int counter;
+    private final QuestionRepository questionRepository;
 
-    public JavaQuestionService(Set<Question> questions) {
-        this.questions = questions;
-        counter = questions.size();
+    public JavaQuestionService(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
     }
 
     @Override
     public Question add(String question, String answer) {
         Question newQuestion = new Question(question,answer);
-        if (questions.contains(newQuestion)) {
+        if (questionRepository.getSetOfQuestions().contains(newQuestion)) {
             throw new ExistingQuestionException();
         } else {
-            questions.add(newQuestion);
-            counter++;
+            questionRepository.add(newQuestion);
             System.out.println("Вопрос добавлен");
         }
         return newQuestion;
@@ -33,11 +31,10 @@ public class JavaQuestionService implements QuestionService{
 
     @Override
     public Question add(Question newQuestion) {
-        if (questions.contains(newQuestion)) {
+        if (questionRepository.getSetOfQuestions().contains(newQuestion)) {
             throw new ExistingQuestionException();
         } else {
-            questions.add(newQuestion);
-            counter++;
+            questionRepository.add(newQuestion);
             System.out.println("Вопрос добавлен");
         }
         return newQuestion;
@@ -45,9 +42,8 @@ public class JavaQuestionService implements QuestionService{
 
     @Override
     public Question remove(Question question) {
-        if (questions.contains(question)) {
-            questions.remove(question);
-            counter--;
+        if (questionRepository.getSetOfQuestions().contains(question)) {
+            questionRepository.remove(question);
             System.out.println("Вопрос удалён");
         } else {
             throw new NoSuchQuestionException();
@@ -57,20 +53,20 @@ public class JavaQuestionService implements QuestionService{
 
     @Override
     public Collection<Question> getAll() {
-        return questions;
+        return questionRepository.getSetOfQuestions();
     }
 
     @Override
     public Question getRandomQuestion() {
         Random random = new Random();
-        int questionNumber = random.nextInt(0, questions.size());
-        Question[] questionsArray = questions.toArray(new Question[0]);
+        int questionNumber = random.nextInt(0, questionRepository.getSetOfQuestions().size());
+        Question[] questionsArray = questionRepository.getSetOfQuestions().toArray(new Question[0]);
         return questionsArray[questionNumber];
     }
 
     @Override
     public Set<String> findQuestionBySearchTerm(String searchTerm) {
-        return questions.stream()
+        return questionRepository.getSetOfQuestions().stream()
                 .map(Question::getQuestion)
                 .filter(q -> q.contains(searchTerm))
                 .collect(Collectors.toSet());
